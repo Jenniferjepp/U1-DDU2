@@ -22,3 +22,38 @@ for (let i = 0; i<cities.length; i++) {               // deklarerar en for-loop.
 createCityButton(cities[i].name)                      // anropar funktionen "createCityButton" med argumentet  (cities[i].name)  AKA indexet av det objektet vi är på. name för att kunna skriva ut värdet som står på name AKA stadens namn.
 }
 
+
+
+
+// PROMPT - användaren ändrar h2:an
+let userCity = prompt("Vilken stad?");
+const h2 = document.querySelector("h2");
+
+// om stad finns i databas = h2 --> stad + (land)
+// om stad ej finns i databas = h2 --> stad finns inte i databasen
+
+let cityFound = false;                                                // variabeln "cityFound" håller koll på om vi hittar staden
+
+for (let i = 0; i<cities.length; i++) {                               // skapar for-loop som loopar igenom alla städer i arrayen.
+    if (cities[i].name.toLowerCase() === userCity.toLowerCase()) {    // om staden med indexet som loopen är på är strikt lika med användarens stad ska..
+        h2.textContent = `${cities[i].name} (${cities[i].country})`;  // staden med indexet som loopen är på + landet med samma index skrivs ut i h2
+        cityFound = true;                                             // då ändras variablen "cityFound" till true om vi hittar staden i arrayen
+        break;                                                        // avslutar loopen eftersom vi hittat rätt stad
+    }
+}
+
+if (!cityFound) {                                                     // om cityFound är false...      jämför om användarens stad är samma som falskt
+    h2.textContent = `${userCity} finns inte i databasen`             // ändras h2 till staden användaren skriver in + finns inte i databasen
+}
+
+/* MED FUNKTION??
+function whatCity (cityName) {
+    for (let i = 0; i<cities.length; i++) {
+    return `${cities[i].name} (${cities[i].country})`;
+    }
+ }
+    return `${cityName} finns inte i databasen`;
+}
+h2.textContent = whatCity(userCity);
+*/
+
