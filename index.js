@@ -34,13 +34,13 @@ const cityBox =  document.querySelectorAll(".cityBox");              // deklarer
 // om stad finns i databas = h2 --> stad + (land)
 // om stad ej finns i databas = h2 --> stad finns inte i databasen
 
-let cityFound = false;                                                // variabeln "cityFound" håller koll på om vi hittar staden
+let cityFound = false;     // VARFÖR FALSE?                                  // variabeln "cityFound" håller koll på om vi hittar staden
 
 for (let i = 0; i<cities.length; i++) {                               // skapar for-loop som loopar igenom alla städer i arrayen.
     if (cities[i].name.toLowerCase() === userCity.toLowerCase()) {    // om staden med indexet som loopen är på är strikt lika med användarens stad ska..
         h2.textContent = `${cities[i].name} (${cities[i].country})`;  // staden med indexet som loopen är på + landet med samma index skrivs ut i h2
-        cityBox[i].style.backgroundColor = "black";                   // ändrar backgrundsfärgen till svart på den stadsbox som användaren valt.
-        cityBox[i].style.color = "white";                             // ändrar färgen till vit på stadsboxen som användaren har valt.
+  // DENNA FINNS CSS      cityBox[i].style.backgroundColor = "black";                   // ändrar backgrundsfärgen till svart på den stadsbox som användaren valt.
+   // DENNA MED     cityBox[i].style.color = "white";                             // ändrar färgen till vit på stadsboxen som användaren har valt.
         cityFound = true;                                             // då ändras variablen "cityFound" till true om vi hittar staden i arrayen
         break;                                                        // avslutar loopen eftersom vi hittat rätt stad
     }
@@ -58,6 +58,27 @@ if (cityFound) {                                                       // om cit
 } else {                                                               // annars.. AKA cityFound är false
     title.textContent = `Not Found`;                                   // ändra titel till "Not Found"
 }
+
+
+
+
+
+
+// NÄRMSTA OCH LÄNGST BORT
+/*
+function findClosestAndFurthestCity(userCityIndex) {
+    let closestCity = null;                                   // tilldelar inget värde medvetet
+    let furthestCity = null;                                  // tilldelar inget värde medvetet
+    let minDistance = distances.length;                       // tilldelar värdet av längden på arrayen
+    let maxDistance = 0;                                      // börjar på 0
+
+    for (const distanceObj of distances) {                    // går igenom alla objekt i arrayen distances
+        const city1 = distanceObj.city1;
+        const city2 = distanceObj.city2;
+        const distance = distanceObj.distance;
+    } 
+}
+*/
 
 
 
