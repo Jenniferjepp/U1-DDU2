@@ -15,6 +15,7 @@ function createCityButton(cityName) {                // deklarerar funktionen "c
     newBox.textContent = cityName;                   // lägger till textcontent som finns i "cityName" (parametern) i diven.
 
     bigCityDiv.append(newBox);                       // appendar den nyskapta diven i den stora diven som redan fanns i HTML-dokumentet som ska innehålla alla city Buttons.
+    return newBox;
 }
 
 // FOR-LOOP - för att loopa igenom alla city namn.
@@ -28,6 +29,7 @@ createCityButton(cities[i].name)                      // anropar funktionen "cre
 // PROMPT - användaren ändrar h2:an
 let userCity = prompt("Vilken stad?");
 const h2 = document.querySelector("h2");
+const cityBox =  document.querySelectorAll(".cityBox");              // deklarerar konstanten cityBox som är divarna som städerna ligger i.
 
 // om stad finns i databas = h2 --> stad + (land)
 // om stad ej finns i databas = h2 --> stad finns inte i databasen
@@ -37,6 +39,8 @@ let cityFound = false;                                                // variabe
 for (let i = 0; i<cities.length; i++) {                               // skapar for-loop som loopar igenom alla städer i arrayen.
     if (cities[i].name.toLowerCase() === userCity.toLowerCase()) {    // om staden med indexet som loopen är på är strikt lika med användarens stad ska..
         h2.textContent = `${cities[i].name} (${cities[i].country})`;  // staden med indexet som loopen är på + landet med samma index skrivs ut i h2
+        cityBox[i].style.backgroundColor = "black";                   // ändrar backgrundsfärgen till svart på den stadsbox som användaren valt.
+        cityBox[i].style.color = "white";                             // ändrar färgen till vit på stadsboxen som användaren har valt.
         cityFound = true;                                             // då ändras variablen "cityFound" till true om vi hittar staden i arrayen
         break;                                                        // avslutar loopen eftersom vi hittat rätt stad
     }
@@ -45,6 +49,20 @@ for (let i = 0; i<cities.length; i++) {                               // skapar 
 if (!cityFound) {                                                     // om cityFound är false...      jämför om användarens stad är samma som falskt
     h2.textContent = `${userCity} finns inte i databasen`             // ändras h2 till staden användaren skriver in + finns inte i databasen
 }
+
+// IF-SATS - ändra titel tagg
+const title = document.querySelector("title");                         // deklarerar konstanten "title" som refererar till title elementet i head i HTML-dokumentet.
+if (cityFound) {                                                       // om cityFound är true..
+    title.textContent = userCity;                                      // ändra titeln till namnet på staden som användaren valt.
+    
+} else {                                                               // annars.. AKA cityFound är false
+    title.textContent = `Not Found`;                                   // ändra titel till "Not Found"
+}
+
+
+
+
+
 
 /* MED FUNKTION??
 function whatCity (cityName) {
@@ -56,4 +74,5 @@ function whatCity (cityName) {
 }
 h2.textContent = whatCity(userCity);
 */
+
 
