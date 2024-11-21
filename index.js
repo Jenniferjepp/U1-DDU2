@@ -19,6 +19,8 @@ const h2 = document.querySelector("h2");
 const h3 = document.querySelector("h3");
 const title = document.querySelector("title");             // deklarerar konstanten "title" som refererar till title elementet i head i HTML-dokumentet.
 
+
+
 // Recommended: Ask for the city name and then the rest of the code -----------------
 
 // 1. FOR-LOOP - för att loopa igenom alla city namn.
@@ -38,17 +40,17 @@ let userCity = prompt("Vilken stad?");
 /* DETTA SKA HÄNDA...
 
 OM STADEN FINNS I DATABASEN =
-- H2 uppdateras med stad + (land)
+-    H2 uppdateras med stad + (land)
 - H3 uppdateras med staden som ligger närmst (#closest) och längst bort (#furthest)
-- div (#cityBox) som innehåller staden som anv har skrivit in ska få svart bakgrundsfärg och vit textfärg (dessa finns i CSS)
+-    div (#cityBox) som innehåller staden som anv har skrivit in ska få svart bakgrundsfärg och vit textfärg (dessa finns i CSS)
 - div (#cityBox) som innehåller staden som ligger närmst användarens stad får grön bakgrundsfärg och vit textfärg (finns i css) och texten i diven uppdateras till "... ligger ... mil bort"
 - div (#cityBox) som innehåller staden som ligger längst bort från användarens stad får blå bakgrundsfärg och vit textfärg (finns i css) och texten i diven uppdateras till "... ligger ... mil bort"
-- title anger staden
+-     title anger staden
 
 OM STADEN INTE FINNS =
-- H2 uppdateras med staden anv skrivt in och "finns inte i databasen"
-- title anger "not found"
-- H3 försvinner - null
+-     H2 uppdateras med staden anv skrivt in och "finns inte i databasen"
+-     title anger "not found"
+-     H3 försvinner - null
 */
 
 
@@ -69,8 +71,70 @@ for (let i = 0; i<cities.length; i++) {                               // skapar 
 if (!cityFound) {                                                     // om cityFound är false...      jämför om användarens stad är samma som falskt
     h2.textContent = `${userCity} finns inte i databasen`             // ändras h2 till staden användaren skriver in + finns inte i databasen
     title.textContent = `Not Found`;                                  // ändra titel till "Not Found"
-    h3.textContent = null;
+    h3.textContent = null;                                            // gör att h3 försvinner
 }
+
+
+
+
+//--------- TABELL ---------- //
+function createTable() {
+    const tabell = document.querySelector("#table")            // konstanten "tabell" som kopplas till diven #table som ska innehålla hela griden.
+    const rows = cities.length; //???                                     // konstanten "rows" deklareras - kommer användas senare
+    const columns = 40;                                        // konstanten "columns" deklareras - kommer användas senare
+    
+    //tabell.style.gridTemplateRows = "repeat(38, 1fr)";
+
+// SKAPA KOLUMNERNA
+    for (let a=0; a<columns; a++) {                             // for-loop med variablen "a", börjar på 0, kör till 40 (deklarerat i var "columns") och +1 efter varje loop.
+        const emptyCell = document.createElement("div");        // loopen skapar en ny div (som får konstantnamnet "emptyCell") för varje loop/ iteration
+        emptyCell.classList.add("cell");                        // divarna får klassen .cell som 
+        emptyCell.classList.add("head_column");                 // divarna får klassen .head_column, AKA de 38 divarna som innehåller siffra 1-38 i översta raden (why column då??)
+       // emptyCell.style.display = "grid";
+        tabell.appendChild(emptyCell);                          // de små emptyCell divarna appendas och blir barn till den stora diven som innehåller tabellen
+
+        // LÄGG IN ID:S I ALLA ÖVRE KOLUMNBOXAR
+        if (a === 0) {                                      // när a === 0
+            emptyCell.textContent = "";                     // ska det inte finnas ngt textcontent i diven, eftersom den första ska vara tom
+        } else {
+            emptyCell.textContent = cities[a-1].id;         // index 1-38 på arrayen "cities".id skrivs ut i head columnen
+        }
+    }
+
+// SKAPA RADERNA
+    for (let i = 0; i < rows; i++) {                                // for-loop med variabel i som börjar på 0, kör så många divar som längden av arrayen cities och +1 efter varje loop.
+        let namesRow = document.createElement("div");               // variablen "namesRow" blir divarna som skapas i loopen.
+        namesRow.textContent = `${cities[i].id}-${cities[i].name}`; // alla divar som ligger först i alla rader till vänster (AKA den breda kolumnen till vänster) får textcontent "id + namn" i cities arrayen.
+        namesRow.classList.add("head_row");                         // divarna får klassen .head_row som stylar dem genom CSS
+        namesRow.classList.add("cell");                             // de får också klassen "cell"
+        //namesRow.style.display = "grid";
+        tabell.appendChild(namesRow);                               // divarna appendas som barn till den stora diven med tabellen
+
+        for (let j=1; j<columns; j++) {                        // for-loop med varibel j startar på 1, kör så många divar som längden på 
+            const cell = document.createElement("div");        // konstanten "cell" blir de divar som skapas för varje loop
+            cell.textContent = "ok";                 // divarna får textcontent ... ok just nu - måste lista ut hur siffror kommer in
+            cell.classList.add("cell");                        // divarna får klassen "cell"
+            //cell.style.display = "grid";
+            tabell.appendChild(cell);                           // divarna appendas som barn till tabell-diven
+
+        }
+    }
+}
+
+
+createTable();
+
+// SKAPA EGEN GRID TABELL
+/*const tabell = document.querySelector("#table")
+    //const tabell = document.createElement("div");
+   // tabell.id = "table";
+    tabell.style.width = "85vw"; 
+    const rows = 40; //???
+    const columns = 40;
+    //tabell.style.gridTemplateColumns = `80 px repeat(${columns}, 1fr)`;
+    tabell.style.gridTemplateRows = `repeat(${rows + 1}, 1fr)`;
+    document.querySelector("#table").appendChild(tabell); */
+
 
 /* IF-SATS - ändra titel tagg
 const title = document.querySelector("title");                         // deklarerar konstanten "title" som refererar till title elementet i head i HTML-dokumentet.
