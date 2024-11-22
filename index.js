@@ -11,7 +11,6 @@ function createCityButton(cityName) {                // deklarerar funktionen "c
 }
 
 
-
 // Recommended: constants with references to existing HTML-elements -----------------
 
 const bigCityDiv = document.querySelector("#cities");      // deklarerar konstanten bigCityDiv som refererar till diven som har id:et #cities.
@@ -23,7 +22,10 @@ const title = document.querySelector("title");             // deklarerar konstan
 
 // Recommended: Ask for the city name and then the rest of the code -----------------
 
-// 1. FOR-LOOP - för att loopa igenom alla city namn.
+// ---- PROMPT - användaren ändrar h2:an --------------
+let userCity = prompt("Vilken stad?");
+
+// 1. FOR-LOOP - för att loopa igenom alla city namn. ------------------
 for (let i = 0; i<cities.length; i++) {               // deklarerar en for-loop. Här skapas variablen i som startar på siffran (AKA index) 0. Vi skriver  i<cities.length  för att kunna loopa igenom varje objekt i arrayen från index 0 till sista objektet (genom att skriva cities.length kommer vi igenom alla och avslutar på sista objektet). Efter varje loop inkremeras i med 1 och går vidare till nästa index i arrayen.
 createCityButton(cities[i].name)                      // anropar funktionen "createCityButton" med argumentet  (cities[i].name)  AKA indexet av det objektet vi är på. name för att kunna skriva ut värdet som står på name AKA stadens namn.
 }
@@ -32,11 +34,7 @@ createCityButton(cities[i].name)                      // anropar funktionen "cre
 const cityBoxes =  document.querySelectorAll(".cityBox");    // deklarerar konstanten cityBox som är divarna som städerna ligger i.
 
 
-
-// PROMPT - användaren ändrar h2:an
-let userCity = prompt("Vilken stad?");
-
-
+// --------------------------------
 /* DETTA SKA HÄNDA...
 
 OM STADEN FINNS I DATABASEN =
@@ -52,13 +50,16 @@ OM STADEN INTE FINNS =
 -     title anger "not found"
 -     H3 försvinner - null
 */
+// ---------------------------------
 
-
+// ------- OM CITYFOUND = TRUE --------- //
 let cityFound = false;     // VARFÖR FALSE?                           // variabeln "cityFound" håller koll på om vi hittar staden
 
 for (let i = 0; i<cities.length; i++) {                               // skapar for-loop som loopar igenom alla städer i arrayen.
     if (cities[i].name.toLowerCase() === userCity.toLowerCase()) {    // om staden med indexet som loopen är på är strikt lika med användarens stad ska..
+        
         h2.textContent = `${cities[i].name} (${cities[i].country})`;  // staden med indexet som loopen är på + landet med samma index skrivs ut i h2
+        
         cityBoxes[i].classList.add("target");                         // ändrar backgrundsfärgen till svart och textfärgen till vit på den stadsbox som användaren valt.
         
         title.textContent = userCity;                                 // ändra titeln till namnet på staden som användaren valt.
@@ -67,10 +68,12 @@ for (let i = 0; i<cities.length; i++) {                               // skapar 
         break;                                                        // avslutar loopen eftersom vi hittat rätt stad
     }
 }
-
+// -------- OM CITYFOUND = FALSE --------- //
 if (!cityFound) {                                                     // om cityFound är false...      jämför om användarens stad är samma som falskt
     h2.textContent = `${userCity} finns inte i databasen`             // ändras h2 till staden användaren skriver in + finns inte i databasen
+    
     title.textContent = `Not Found`;                                  // ändra titel till "Not Found"
+    
     h3.textContent = null;                                            // gör att h3 försvinner
 }
 
@@ -110,16 +113,30 @@ function createTable() {
         //namesRow.style.display = "grid";
         tabell.appendChild(namesRow);                               // divarna appendas som barn till den stora diven med tabellen
 
+        if (i % 2 === 0) {                                    // ändrar så att varje jämn rad i kolumnen med namnen till vänster får en tjockare border
+            namesRow.classList.add("even_row");
+        }
+      
+
         for (let j=1; j<columns; j++) {                        // for-loop med varibel j startar på 1, kör så många divar som längden på 
             const cell = document.createElement("div");        // konstanten "cell" blir de divar som skapas för varje loop
             cell.textContent = "ok";                 // divarna får textcontent ... ok just nu - måste lista ut hur siffror kommer in
             cell.classList.add("cell");                        // divarna får klassen "cell"
             //cell.style.display = "grid";
             tabell.appendChild(cell);                           // divarna appendas som barn till tabell-diven
+            
+            if (j % 2 === 0) {                                  // ändrar bakgrundsfäregen på varje jämn kolumn (i cell tabellen)
+                cell.classList.add("even_col");
+            }
+            if (i % 2 === 0) {                                   // ändrar så att varje jämn rad i cell tabellen får en tjockare border
+                cell.classList.add("even_row");
+            }
+            
 
         }
     }
 }
+
 
 
 createTable();
