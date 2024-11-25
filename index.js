@@ -54,12 +54,6 @@ OM STADEN INTE FINNS =
 
 // ------- OM CITYFOUND = TRUE --------- //
 let cityFound = false;     // VARFÖR FALSE?                           // variabeln "cityFound" håller koll på om vi hittar staden
-    if (cities[i].name.toLowerCase() === userCity.toLowerCase()) {    // om staden med indexet som loopen är på är strikt lika med användarens stad ska..
-        
-        h2.textContent = `${cities[i].name} (${cities[i].country})`;  // staden med indexet som loopen är på + landet med samma index skrivs ut i h2
-        
-        cityBoxes[i].classList.add("target");                         // ändrar backgrundsfärgen till svart och textfärgen till vit på den stadsbox som användaren valt.
-        
 selectedCity = null;
 
 // Första loopen för att hitta den valda staden
@@ -70,15 +64,6 @@ for (let i = 0; i < cities.length; i++) {
         break; // Avsluta loopen när staden är funnen
     }
 }
-// -------- OM CITYFOUND = FALSE --------- //
-if (!cityFound) {                                                     // om cityFound är false...      jämför om användarens stad är samma som falskt
-    h2.textContent = `${userCity} finns inte i databasen`             // ändras h2 till staden användaren skriver in + finns inte i databasen
-    
-    title.textContent = `Not Found`;                                  // ändra titel till "Not Found"
-    
-    h3.textContent = null;                                            // gör att h3 försvinner
-}
-*/
 
 // Om staden inte hittas
 if (!cityFound) {
@@ -88,6 +73,9 @@ if (!cityFound) {
 } 
 
 if (cityFound) {
+    h2.textContent = `${selectedCity.name} (${selectedCity.country})`; // Uppdatera h2 med stadens namn och land
+    cityBoxes[cities.indexOf(selectedCity)].classList.add("target"); // Ändra bakgrund och textfärg för vald stad
+    title.textContent = userCity; // Uppdatera titeln på sidan
 
 
     let minDistance = Infinity; // För att hitta närmaste stad
@@ -121,6 +109,12 @@ if (cityFound) {
         }
     }
 
+    // Uppdatera H3 med information om närmaste och längst bort städer
+    const closestSpan = document.querySelector("#closest");
+    const furthestSpan = document.querySelector("#furthest");
+
+    closestSpan.textContent = closestCity.name;  // Närmaste stad
+    furthestSpan.textContent = furthestCity.name; 
 
     // Uppdatera text och färger i cityBoxes genom att använda index direkt
     for (let i = 0; i < cities.length; i++) {
