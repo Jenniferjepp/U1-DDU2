@@ -11,48 +11,6 @@ function createCityButton(cityName) {                // deklarerar funktionen "c
 }
 
 
-/* function findClosestAndFurthestCity (userCity, cities) {
-    let selectedCity = null;
-
-    for (let city of cities) {
-        if(city.name === userCity) {
-            selectedCity = city;
-            break;
-        }
-    } 
-
-    let closestCity = null;
-    let furthestCity = null;
-    let minDistance = Infinity;
-    let maxDistance = -Infinity;
-
-    for (let city of cities) {
-        if (city.name !== selectedCity.name) {
-            const distance = selectedCity.distances[city.id]
-
-            if (distance < minDistance) {
-                minDistance = distance;
-                closestCity = city;
-            }
-            if (distance > maxDistance){
-                maxDistance = distance;
-                furthestCity = city;
-            }
-        }     
-    }
-    return {
-        closest: {
-            name: closestCity.name,
-            distance: minDistance
-        },
-        furthest: {
-            name: furthestCity.name,
-            distance: maxDistance
-        }
-    };
-} */
-
-
 // Recommended: constants with references to existing HTML-elements -----------------
 
 const bigCityDiv = document.querySelector("#cities");      // deklarerar konstanten bigCityDiv som refererar till diven som har id:et #cities.
@@ -96,18 +54,20 @@ OM STADEN INTE FINNS =
 
 // ------- OM CITYFOUND = TRUE --------- //
 let cityFound = false;     // VARFÖR FALSE?                           // variabeln "cityFound" håller koll på om vi hittar staden
-
-for (let i = 0; i<cities.length; i++) {                               // skapar for-loop som loopar igenom alla städer i arrayen.
     if (cities[i].name.toLowerCase() === userCity.toLowerCase()) {    // om staden med indexet som loopen är på är strikt lika med användarens stad ska..
         
         h2.textContent = `${cities[i].name} (${cities[i].country})`;  // staden med indexet som loopen är på + landet med samma index skrivs ut i h2
         
         cityBoxes[i].classList.add("target");                         // ändrar backgrundsfärgen till svart och textfärgen till vit på den stadsbox som användaren valt.
         
-        title.textContent = userCity;                                 // ändra titeln till namnet på staden som användaren valt.
-        
-        cityFound = true;                                             // då ändras variablen "cityFound" till true om vi hittar staden i arrayen
-        break;                                                        // avslutar loopen eftersom vi hittat rätt stad
+selectedCity = null;
+
+// Första loopen för att hitta den valda staden
+for (let i = 0; i < cities.length; i++) {
+    if (cities[i].name.toLowerCase() === userCity.toLowerCase()) {
+        selectedCity = cities[i]; // Spara den valda staden som selectedCity
+        cityFound = true; // Markera att staden hittades
+        break; // Avsluta loopen när staden är funnen
     }
 }
 // -------- OM CITYFOUND = FALSE --------- //
@@ -120,13 +80,59 @@ if (!cityFound) {                                                     // om city
 }
 */
 
+// Om staden inte hittas
+if (!cityFound) {
+    h2.textContent = `${userCity} finns inte i databasen`; // Visa att staden inte finns
+    title.textContent = `Not Found`; // Uppdatera titeln till "Not Found"
+    h3.textContent = null; // Ta bort texten för närmaste och längst bort
+} 
 
-/*
-const result = findClosestAndFurthestCity(userCity, cities);
-if (result) {
-    console.log("hej");
-}  */
+if (cityFound) {
 
+
+    let minDistance = Infinity; // För att hitta närmaste stad
+    let maxDistance = -Infinity; // För att hitta längst bort stad
+    let closestCity = null; // tilldelar inget värde medvetet
+    let furthestCity = null;
+
+    for (let i = 0; i < cities.length; i++) {
+        if (cities[i].name.toLowerCase() !== userCity.toLowerCase()) {  
+            let distanceValue = Infinity;
+
+            // För att hitta avståndet utan att använda find()
+            for (let j = 0; j < distances.length; j++) {
+                if ((distances[j].city1 === selectedCity.id && distances[j].city2 === cities[i].id) || 
+                    (distances[j].city2 === selectedCity.id && distances[j].city1 === cities[i].id)) {
+                    distanceValue = distances[j].distance; // Om vi hittar matchande städer sätts avståndet
+                    break; // När vi har hittat rätt avstånd, avbryt inre loopen
+                }
+            }
+
+            // Om vi har hittat ett giltigt avstånd
+            if (distanceValue < minDistance) {
+                minDistance = distanceValue;
+                closestCity = cities[i];
+            }
+
+            if (distanceValue > maxDistance) {
+                maxDistance = distanceValue;
+                furthestCity = cities[i];
+            }
+        }
+    }
+
+
+    // Uppdatera text och färger i cityBoxes genom att använda index direkt
+    for (let i = 0; i < cities.length; i++) {
+        if (cities[i].name === closestCity.name) {
+            cityBoxes[i].classList.add("closest");
+            cityBoxes[i].textContent = `${closestCity.name} ligger ${minDistance / 10} mil bort`;
+        } else if (cities[i].name === furthestCity.name) {
+            cityBoxes[i].classList.add("furthest");
+            cityBoxes[i].textContent = `${furthestCity.name} ligger ${maxDistance / 10} mil bort`;
+        }
+    }
+}
 
 
 
@@ -170,24 +176,25 @@ function createTable() {
       
 
         for (let j=0; j<cities.length; j++) {                        // for-loop med varibel j startar på 1, kör så många divar som längden på 
-            const cell = document.createElement("div");        // konstanten "cell" blir de divar som skapas för varje loop
-            cell.classList.add("cell");                        // divarna får klassen "cell"
+            const cell = document.createElement("div");              // konstanten "cell" blir de divar som skapas för varje loop
+            cell.classList.add("cell");                              // divarna får klassen "cell"
             
-            let distanceValue = null;                      //värdet av distance
-            for (let distance of distances) {
-                if ((distance.city1 === cities[i].id && distance.city2 === cities[j].id)) {
-                    distanceValue = distance.distance;
-                    break;
+            let distanceValue = null;                                           // variablen "distanceValue" får värdet null AKA inget for now
+            for (let distance of distances) {                                   // for-loop som loopar genom de olika distanserna i arrayen distances
+                if ((distance.city1 === cities[i].id && distance.city2 === cities[j].id)) {  
+                // distance är objekten i arrayen distances, city 1 är nyckeln i objektet. om det objektet vi är på i arrayen är samma som objektet med indexet vi är på i i-loopen med nyckeln id OCH distance.city2 AKA om id:t på city2 är samma så..
+                    distanceValue = distance.distance;     // ändras variablen distanceValue till det objektet vi är på eftersom distance variablen är som indexet (objektet) vi är på + nycklen distance som har värdet av distansen mellan de 2 städerna.
+                    break;  // vi brekar - hoppar över if:en och vidare ner till nästa if som ligger i vår stora i-for-loop.
                 }
-                if (distance.city2 === cities[i].id && distance.city1 === cities[j].id) {
-                    distanceValue = distance.distance;
+                if (distance.city2 === cities[i].id && distance.city1 === cities[j].id) {  // 
+                    distanceValue = distance.distance;  //
                 }
             }
 
-            if (distanceValue !== null) {
-                cell.textContent = distanceValue / 10;
-            } else if (i === j) {
-                cell.textContent = "";
+            if (distanceValue !== null) {               // här fortsätter vi efter distanceValue fått ett distans-värde AKA distanceValue är INTE null längre, då ska...
+                cell.textContent = distanceValue / 10;  // cellen fyllas med distans-värdet / 10, annars en nolla för mkt
+            } else if (i === j) {                       // annars om i===j 
+                cell.textContent = "";                  // ska cellen vara tom
             }
 
             if (j % 2 === 0) {                                  // ändrar bakgrundsfäregen på varje jämn kolumn (i cell tabellen)
@@ -204,119 +211,6 @@ function createTable() {
 
 
 createTable();
-
-
-
-
-
-
-/*
-let closestCity = null;                                   // tilldelar inget värde medvetet
-    let furthestCity = null;                                  // tilldelar inget värde medvetet
-    let minDistance = distances.length;                       // tilldelar värdet av längden på arrayen
-    let maxDistance = 0; 
-
-
-
-
-let cityFound = false;     // VARFÖR FALSE?                                  // variabeln "cityFound" håller koll på om vi hittar staden
-
-for (let i = 0; i<cities.length; i++) {                               // skapar for-loop som loopar igenom alla städer i arrayen.
-    if (cities[i].name.toLowerCase() === userCity.toLowerCase()) {    // om staden med indexet som loopen är på är strikt lika med användarens stad ska..
-        h2.textContent = `${cities[i].name} (${cities[i].country})`;  // staden med indexet som loopen är på + landet med samma index skrivs ut i h2
-        
-  
-        // DENNA FINNS CSS      cityBox[i].style.backgroundColor = "black";                   // ändrar backgrundsfärgen till svart på den stadsbox som användaren valt.
-   // DENNA MED     cityBox[i].style.color = "white";                             // ändrar färgen till vit på stadsboxen som användaren har valt.
-        cityFound = true;                                             // då ändras variablen "cityFound" till true om vi hittar staden i arrayen
-        break;                                                        // avslutar loopen eftersom vi hittat rätt stad
-    }
-}
-
-
-
-
-//
-if (userCity) {
-   // h2.textContent = `${userCity.name} (${userCity.country})`;
-
-    let closestCity = null;                                   // tilldelar inget värde medvetet
-    let furthestCity = null;                                  // tilldelar inget värde medvetet
-    let minDistance = Infinity;                       // tilldelar värdet av längden på arrayen
-    let maxDistance = 0;   
-
-    for (let path of distances) {
-        if (path.city1 == userCity.id) {
-            if (path.distance < minDistance) {
-                minDistance = path.distance;
-                closestCity = path.city2;
-            }
-            if (path.distance > maxDistance) {
-                maxDistance = path.distance;
-                furthestCity = path.city2;
-            }
-        }
-    }
-
-    let closestCityObject = cities.find(city => city.id == closestCity); // Hitta stad baserat på ID
-    let furthestCityObject = cities.find(city => city.id == furthestCity);
-
-   /* let closestCityObject = null;
-    let furthestCityObject = null; 
-    for (let city of cities) {
-        if (city.id == closestCity) {
-            closestCityObject = city;
-        }
-        if (city.id == furthestCity) {
-            furthestCityObject = city;
-        }
-    }
-
-    document.querySelector("h3").textContent = `Närmast: ${closestCityObject.name}, längst: ${furthestCityObject.name}`;
-}
-//} else {
-   // document.querySelector
-//}
-
-
-
-/*
-let maxDistance = 0;
-let furthestCityIndex = -1;
-
-for (let i = 0; i<distances.length; i++) {
-    if (userCity === cities[distances[i].city1].name || userCity === cities[distances[i].city2].name) {
-        let furthestCity = (userCity === cities[distances[i].city].name) ? distances[i].city2 : distances[i].city1;
-        if (distances[i].distance > maxDistance); {
-            maxDistance = distances[i].distance;
-            furthestCityIndex = furthestCity;
-        }
-    }
-}
-
-if (furthestCityIndex !== -1) {
-    const cityDivs = document.querySelectorAll(".cityBox");
-    cityDivs[furthestCityIndex].classList.add("furthest");
-}
-*/
-
-// NÄRMSTA OCH LÄNGST BORT
-/*
-function findClosestAndFurthestCity(userCityIndex) {
-    let closestCity = null;                                   // tilldelar inget värde medvetet
-    let furthestCity = null;                                  // tilldelar inget värde medvetet
-    let minDistance = distances.length;                       // tilldelar värdet av längden på arrayen
-    let maxDistance = 0;                                      // börjar på 0
-
-    for (const distanceObj of distances) {                    // går igenom alla objekt i arrayen distances
-        const city1 = distanceObj.city1;
-        const city2 = distanceObj.city2;
-        const distance = distanceObj.distance;
-    } 
-}
-*/
-
-
 
 
 
