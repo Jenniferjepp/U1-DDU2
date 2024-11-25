@@ -84,7 +84,7 @@ if (!cityFound) {                                                     // om city
 function createTable() {
     const tabell = document.querySelector("#table")            // konstanten "tabell" som kopplas till diven #table som ska innehålla hela griden.
     const rows = cities.length; //???                                     // konstanten "rows" deklareras - kommer användas senare
-    const columns = 40;                                        // konstanten "columns" deklareras - kommer användas senare
+    const columns = cities.length+ 1;                                        // konstanten "columns" deklareras - kommer användas senare
     
     //tabell.style.gridTemplateRows = "repeat(38, 1fr)";
 
@@ -93,7 +93,6 @@ function createTable() {
         const emptyCell = document.createElement("div");        // loopen skapar en ny div (som får konstantnamnet "emptyCell") för varje loop/ iteration
         emptyCell.classList.add("cell");                        // divarna får klassen .cell som 
         emptyCell.classList.add("head_column");                 // divarna får klassen .head_column, AKA de 38 divarna som innehåller siffra 1-38 i översta raden (why column då??)
-       // emptyCell.style.display = "grid";
         tabell.appendChild(emptyCell);                          // de små emptyCell divarna appendas och blir barn till den stora diven som innehåller tabellen
 
         // LÄGG IN ID:S I ALLA ÖVRE KOLUMNBOXAR
@@ -104,40 +103,83 @@ function createTable() {
         }
     }
 
+
 // SKAPA RADERNA
     for (let i = 0; i < rows; i++) {                                // for-loop med variabel i som börjar på 0, kör så många divar som längden av arrayen cities och +1 efter varje loop.
         let namesRow = document.createElement("div");               // variablen "namesRow" blir divarna som skapas i loopen.
         namesRow.textContent = `${cities[i].id}-${cities[i].name}`; // alla divar som ligger först i alla rader till vänster (AKA den breda kolumnen till vänster) får textcontent "id + namn" i cities arrayen.
         namesRow.classList.add("head_row");                         // divarna får klassen .head_row som stylar dem genom CSS
         namesRow.classList.add("cell");                             // de får också klassen "cell"
-        //namesRow.style.display = "grid";
         tabell.appendChild(namesRow);                               // divarna appendas som barn till den stora diven med tabellen
+
 
         if (i % 2 === 0) {                                    // ändrar så att varje jämn rad i kolumnen med namnen till vänster får en tjockare border
             namesRow.classList.add("even_row");
         }
       
 
-        for (let j=1; j<columns; j++) {                        // for-loop med varibel j startar på 1, kör så många divar som längden på 
+        for (let j=0; j<cities.length; j++) {                        // for-loop med varibel j startar på 1, kör så många divar som längden på 
             const cell = document.createElement("div");        // konstanten "cell" blir de divar som skapas för varje loop
-            cell.textContent = "ok";                 // divarna får textcontent ... ok just nu - måste lista ut hur siffror kommer in
             cell.classList.add("cell");                        // divarna får klassen "cell"
-            //cell.style.display = "grid";
-            tabell.appendChild(cell);                           // divarna appendas som barn till tabell-diven
             
+            let distanceValue = null;                      //värdet av distance
+            for (let distance of distances) {
+                if ((distance.city1 === cities[i].id && distance.city2 === cities[j].id)) {
+                    distanceValue = distance.distance;
+                    break;
+                }
+                if (distance.city2 === cities[i].id && distance.city1 === cities[j].id) {
+                    distanceValue = distance.distance;
+                }
+            }
+
+            if (distanceValue !== null) {
+                cell.textContent = distanceValue / 10;
+            } else if (i === j) {
+                cell.textContent = "";
+            }
+
             if (j % 2 === 0) {                                  // ändrar bakgrundsfäregen på varje jämn kolumn (i cell tabellen)
                 cell.classList.add("even_col");
             }
             if (i % 2 === 0) {                                   // ändrar så att varje jämn rad i cell tabellen får en tjockare border
                 cell.classList.add("even_row");
             }
-            
 
+            tabell.appendChild(cell);                           // divarna appendas som barn till tabell-diven
         }
     }
 }
 
 
+
+
+
+
+
+/*
+if (i % 2 === 0) {                                    // ändrar så att varje jämn rad i kolumnen med namnen till vänster får en tjockare border
+    namesRow.classList.add("even_row");
+}
+
+
+for (let j=1; j<columns; j++) {                        // for-loop med varibel j startar på 1, kör så många divar som längden på 
+    const cell = document.createElement("div");        // konstanten "cell" blir de divar som skapas för varje loop
+    //cell.textContent = "ok";                 // divarna får textcontent ... ok just nu - måste lista ut hur siffror kommer in
+    cell.classList.add("cell");                        // divarna får klassen "cell"
+    //cell.style.display = "grid";
+    tabell.appendChild(cell);                           // divarna appendas som barn till tabell-diven
+    
+
+    if (j % 2 === 0) {                                  // ändrar bakgrundsfäregen på varje jämn kolumn (i cell tabellen)
+        cell.classList.add("even_col");
+    }
+    if (i % 2 === 0) {                                   // ändrar så att varje jämn rad i cell tabellen får en tjockare border
+        cell.classList.add("even_row");
+    }
+}
+}
+} */
 
 createTable();
 
