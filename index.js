@@ -11,6 +11,48 @@ function createCityButton(cityName) {                // deklarerar funktionen "c
 }
 
 
+/* function findClosestAndFurthestCity (userCity, cities) {
+    let selectedCity = null;
+
+    for (let city of cities) {
+        if(city.name === userCity) {
+            selectedCity = city;
+            break;
+        }
+    } 
+
+    let closestCity = null;
+    let furthestCity = null;
+    let minDistance = Infinity;
+    let maxDistance = -Infinity;
+
+    for (let city of cities) {
+        if (city.name !== selectedCity.name) {
+            const distance = selectedCity.distances[city.id]
+
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestCity = city;
+            }
+            if (distance > maxDistance){
+                maxDistance = distance;
+                furthestCity = city;
+            }
+        }     
+    }
+    return {
+        closest: {
+            name: closestCity.name,
+            distance: minDistance
+        },
+        furthest: {
+            name: furthestCity.name,
+            distance: maxDistance
+        }
+    };
+} */
+
+
 // Recommended: constants with references to existing HTML-elements -----------------
 
 const bigCityDiv = document.querySelector("#cities");      // deklarerar konstanten bigCityDiv som refererar till diven som har id:et #cities.
@@ -76,6 +118,15 @@ if (!cityFound) {                                                     // om city
     
     h3.textContent = null;                                            // gör att h3 försvinner
 }
+*/
+
+
+/*
+const result = findClosestAndFurthestCity(userCity, cities);
+if (result) {
+    console.log("hej");
+}  */
+
 
 
 
@@ -140,7 +191,7 @@ function createTable() {
             }
 
             if (j % 2 === 0) {                                  // ändrar bakgrundsfäregen på varje jämn kolumn (i cell tabellen)
-                cell.classList.add("even_col");
+                cell.classList.add("even_col"); 
             }
             if (i % 2 === 0) {                                   // ändrar så att varje jämn rad i cell tabellen får en tjockare border
                 cell.classList.add("even_row");
@@ -152,95 +203,12 @@ function createTable() {
 }
 
 
-
-
-
-
-
-/*
-if (i % 2 === 0) {                                    // ändrar så att varje jämn rad i kolumnen med namnen till vänster får en tjockare border
-    namesRow.classList.add("even_row");
-}
-
-
-for (let j=1; j<columns; j++) {                        // for-loop med varibel j startar på 1, kör så många divar som längden på 
-    const cell = document.createElement("div");        // konstanten "cell" blir de divar som skapas för varje loop
-    //cell.textContent = "ok";                 // divarna får textcontent ... ok just nu - måste lista ut hur siffror kommer in
-    cell.classList.add("cell");                        // divarna får klassen "cell"
-    //cell.style.display = "grid";
-    tabell.appendChild(cell);                           // divarna appendas som barn till tabell-diven
-    
-
-    if (j % 2 === 0) {                                  // ändrar bakgrundsfäregen på varje jämn kolumn (i cell tabellen)
-        cell.classList.add("even_col");
-    }
-    if (i % 2 === 0) {                                   // ändrar så att varje jämn rad i cell tabellen får en tjockare border
-        cell.classList.add("even_row");
-    }
-}
-}
-} */
-
 createTable();
 
-// SKAPA EGEN GRID TABELL
-/*const tabell = document.querySelector("#table")
-    //const tabell = document.createElement("div");
-   // tabell.id = "table";
-    tabell.style.width = "85vw"; 
-    const rows = 40; //???
-    const columns = 40;
-    //tabell.style.gridTemplateColumns = `80 px repeat(${columns}, 1fr)`;
-    tabell.style.gridTemplateRows = `repeat(${rows + 1}, 1fr)`;
-    document.querySelector("#table").appendChild(tabell); */
 
 
-/* IF-SATS - ändra titel tagg
-const title = document.querySelector("title");                         // deklarerar konstanten "title" som refererar till title elementet i head i HTML-dokumentet.
-if (cityFound) {                                                       // om cityFound är true..
-    title.textContent = userCity;                                      // ändra titeln till namnet på staden som användaren valt.
-    
-} else {                                                               // annars.. AKA cityFound är false
-    title.textContent = `Not Found`;                                   // ändra titel till "Not Found"
-} */
 
 
-/*
-// PROMPT - användaren ändrar h2:an
-let userCity = prompt("Vilken stad?");
-const h2 = document.querySelector("h2");
-const cityBox =  document.querySelectorAll(".cityBox");              // deklarerar konstanten cityBox som är divarna som städerna ligger i.
-
-// om stad finns i databas = h2 --> stad + (land)
-// om stad ej finns i databas = h2 --> stad finns inte i databasen
-
-let cityFound = false;     // VARFÖR FALSE?                                  // variabeln "cityFound" håller koll på om vi hittar staden
-
-for (let i = 0; i<cities.length; i++) {                               // skapar for-loop som loopar igenom alla städer i arrayen.
-    if (cities[i].name.toLowerCase() === userCity.toLowerCase()) {    // om staden med indexet som loopen är på är strikt lika med användarens stad ska..
-        h2.textContent = `${cities[i].name} (${cities[i].country})`;  // staden med indexet som loopen är på + landet med samma index skrivs ut i h2
-        
-  
-        // DENNA FINNS CSS      cityBox[i].style.backgroundColor = "black";                   // ändrar backgrundsfärgen till svart på den stadsbox som användaren valt.
-   // DENNA MED     cityBox[i].style.color = "white";                             // ändrar färgen till vit på stadsboxen som användaren har valt.
-        cityFound = true;                                             // då ändras variablen "cityFound" till true om vi hittar staden i arrayen
-        break;                                                        // avslutar loopen eftersom vi hittat rätt stad
-    }
-}
-
-if (!cityFound) {                                                     // om cityFound är false...      jämför om användarens stad är samma som falskt
-    h2.textContent = `${userCity} finns inte i databasen`             // ändras h2 till staden användaren skriver in + finns inte i databasen
-}
-
-// IF-SATS - ändra titel tagg
-const title = document.querySelector("title");                         // deklarerar konstanten "title" som refererar till title elementet i head i HTML-dokumentet.
-if (cityFound) {                                                       // om cityFound är true..
-    title.textContent = userCity;                                      // ändra titeln till namnet på staden som användaren valt.
-    
-} else {                                                               // annars.. AKA cityFound är false
-    title.textContent = `Not Found`;                                   // ändra titel till "Not Found"
-}
-*/
 
 /*
 let closestCity = null;                                   // tilldelar inget värde medvetet
