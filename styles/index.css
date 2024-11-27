@@ -6,7 +6,7 @@
 }
 
 body {
-  background-color: skyblue;
+  background-color: rgb(247, 196, 163);
   margin: 20px;
 }
 
@@ -19,14 +19,14 @@ body {
 
 #cities .cityBox {
   padding: 3px 6px;
-  background-color: lightgrey;
+  background-color: rgb(250, 240, 230);
   border-radius: 5px;
 }
 
 #cities .target, #cities .closest, #cities .furthest { color: white }
 #cities .target { background-color: black; }
-#cities .closest { background-color: green;}
-#cities .furthest { background-color: blue; }
+#cities .closest { background-color: rgb(148, 171, 130);}
+#cities .furthest { background-color: rgb(79, 115, 221); }
 
 h1 {
   text-align: center;
@@ -48,7 +48,7 @@ h2, h3 {
   text-decoration: none;
   color: black;
   flex-basis: 200px;
-  background-color: lightgrey;
+  background-color: rgb(250, 240, 230);
   border-radius: 5px;
   text-align: center;
 }
@@ -89,5 +89,5 @@ main {
 }
 
 #table .even_col {
-  background-color: #ddd;
+  background-color: rgb(250, 240, 230);
 }
